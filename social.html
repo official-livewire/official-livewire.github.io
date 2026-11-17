@@ -57,12 +57,44 @@ const el=document.getElementById('socialLiveStatus');
 if(!el)return;
 const STATUS_URL='https://sapircast.caster.fm:12036/admin/publicstats.json';
 const WORKER_URL='https://live-wire-entertainment-website.dlyons184.workers.dev/stream-status';
-const MOUNT='/6W6zw';
+const MOUNT='6W6zw';
 let checking=false;
-const fetchJson=async(url,ms=5000)=>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),ms);try{const r=await fetch(url,{signal:controller.signal,cache:'no-store',headers:{Accept:'application/json'}});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(timer)}};
-const directStatus=async()=>{try{const data=await fetchJson(STATUS_URL),source=Array.isArray(data)?(data.find(item=>item?.source)?.source||{}):(data?.source||{});return{ok:true,online:Object.keys(source).some(m=>String(m).replace(/^\\//,'')===MOUNT.replace(/^\\//,''))}}catch(e){return{ok:false,online:false}}};
-async function updateStatus(){if(checking)return;checking=true;try{const direct=await directStatus();let online=direct.ok?direct.online:false;if(!direct.ok){try{const data=await fetchJson(WORKER_URL+'?t='+Date.now());online=data?.online===true}catch(e){online=false}}el.textContent=online?'🔴 LIVE WIRE IS ON AIR NOW — JOIN THE CHAT AND ENJOY THE SHOW!':'⚫ LIVE WIRE IS OFF AIR — MEMBERS’ CHAT IS OPEN.';el.style.borderColor=online?'#a91525':'#bd9148';el.dataset.status=online?'live':'off'}catch(e){el.textContent='⚫ LIVE WIRE IS OFF AIR — MEMBERS’ CHAT IS OPEN.';el.style.borderColor='#bd9148';el.dataset.status='off'}finally{checking=false}}
-updateStatus();
-setInterval(updateStatus,15000);
+const withTimeout=(promise,ms=5000)=>Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),ms))]);
+async function directStatus(){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4500);
+ try{
+  const response=await fetch(STATUS_URL,{signal:controller.signal,cache:'no-store',headers:{Accept:'application/json'}});
+  if(!response.ok)throw new Error('Caster status unavailable');
+  const data=await response.json();
+  const source=Array.isArray(data)?(data.find(item=>item&&item.source)?.source||{}):(data?.source||{});
+  const online=Object.keys(source).some(m=>String(m).replace(/^\//,'')===MOUNT);
+  return {ok:true,online};
+ }finally{clearTimeout(timer)}
+}
+async function readStatus(){
+ if(checking)return;
+ checking=true;
+ el.textContent='Checking LIVE WIRE on-air status…';
+ try{
+  let online=false,known=false;
+  try{const direct=await withTimeout(directStatus(),5000);online=direct.online;known=true}catch(e){}
+  if(!known||!online){
+   try{
+    const data=await withTimeout(fetch(WORKER_URL+'?t='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Status service unavailable');return r.json()}),5000);
+    online=data?.online===true;
+    known=true;
+   }catch(e){}
+  }
+  el.textContent=online?'🔴 LIVE WIRE IS ON AIR NOW — JOIN THE CHAT AND ENJOY THE SHOW!':'⚫ LIVE WIRE IS OFF AIR — MEMBERS’ CHAT IS OPEN.';
+  el.style.borderColor=online?'#a91525':'#bd9148';
+  el.dataset.status=online?'live':'off';
+ }catch(e){
+  el.textContent='⚫ LIVE WIRE IS OFF AIR — MEMBERS’ CHAT IS OPEN.';
+  el.style.borderColor='#bd9148';
+  el.dataset.status='off';
+ }finally{checking=false}
+}
+readStatus();
+setInterval(readStatus,15000);
 })();
 </script></body></html>
