@@ -34,7 +34,7 @@ import {initializeApp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-
 import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendEmailVerification,updateProfile,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,orderBy,limit,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyCUL0CpvxPaZRdjn-hsQRYaDrjEFsr3IcY",authDomain:"live-wire-social.firebaseapp.com",projectId:"live-wire-social",storageBucket:"live-wire-social.firebasestorage.app",messagingSenderId:"685243084488",appId:"1:685243084488:web:20ba86de01811b30233ffd"};
-const ADMIN_EMAIL="dlyons184@gmail.com";
+const ADMIN_EMAIL="dlyons184@googlemail.com";
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const $=id=>document.getElementById(id);let stopChat=null,stopMembers=null,currentUser=null;
 function say(msg){$("authMessage").textContent=msg;$("authMessage").classList.remove("hidden")}
