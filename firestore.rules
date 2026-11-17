@@ -8,10 +8,10 @@ service cloud.firestore {
         && request.auth.token.email_verified == true;
     }
     function isApproved() {
-      return signedIn()
+      return isAdmin() || (signedIn()
+        && request.auth.token.email_verified == true
         && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approved == true
-        && request.auth.token.email_verified == true;
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approved == true);
     }
 
     match /users/{userId} {
