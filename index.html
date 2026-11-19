@@ -237,7 +237,16 @@ body::after{background:linear-gradient(180deg,transparent,#d6ad62,#a91525,transp
 .radio-player h2,.home-live-title,.jukebox-next strong,.request-card h3{color:#ffe8a6!important;text-shadow:0 1px 10px rgba(169,21,37,.45)!important}
 .home-live-pill,.jukebox-status,.request-button,.listen-cta{border:1px solid #d6ad62!important;background:linear-gradient(110deg,#4c1715,#6c431b,#24160d)!important;color:#fff!important;box-shadow:0 0 12px rgba(214,173,98,.25),0 0 16px rgba(169,21,37,.2)!important}
 footer{border-top:1px solid rgba(214,173,98,.45)!important;color:#c9bda8!important}
-</style></head>
+</style>
+<style>
+/* Small, understated Buy Me a Coffee note beneath song requests */
+.lw-coffee-support{max-width:680px;margin:-12px auto 30px;padding:13px 16px;text-align:center;border:1px solid rgba(214,173,98,.48);border-radius:13px;background:linear-gradient(145deg,rgba(33,23,14,.88),rgba(13,9,7,.94));box-shadow:0 0 12px rgba(214,173,98,.09)}
+.lw-coffee-support p{margin:0 0 7px;color:#d8cdbb;font-size:13px;line-height:1.5}
+.lw-coffee-support a{display:inline-flex;align-items:center;gap:6px;color:#ffe8a6;text-decoration:none;font-size:13px;font-weight:800;letter-spacing:.2px}
+.lw-coffee-support a:hover{color:#fff2c7;text-decoration:underline}
+@media(max-width:600px){.lw-coffee-support{margin:-12px 12px 26px;padding:12px}}
+</style>
+</head>
 <body>
 <header class="hero"><div class="wrap">
 <div class="live-wire-logo-wrap"><img class="live-wire-master-logo" src="C1BE94DC-96BF-40A3-BF5A-31E60C6C5478.png" alt="LIVE WIRE official circular master logo"><span class="logo-chase-band" aria-hidden="true"></span></div>
@@ -303,6 +312,10 @@ refresh();readStreamStatus();setInterval(readStreamStatus,15000);
   <p class="request-footnote">Choose your tune, send your request and keep enjoying LIVE WIRE.</p>
 </section>
 
+<section class="content-wrap lw-coffee-support" aria-label="Support LIVE WIRE">
+  <p>Enjoying the music? If you fancy, you can buy DJ Disco Dan a coffee. No pressure — thanks for listening!</p>
+  <a href="https://buymeacoffee.com/officiallivewire" target="_blank" rel="noopener noreferrer" aria-label="Buy DJ Disco Dan a coffee on Buy Me a Coffee">☕ Buy me a coffee</a>
+</section>
 
 <footer class="lw-footer"><div class="lw-footer-banner-wrap"><img class="lw-footer-banner" src="BAB4A2BB-F3DE-4FDB-93A5-03186D915B7B.png" alt="LIVE WIRE — MUSIC • LIVE • BROADCASTING"></div><p>© 2026 LIVE WIRE · MUSIC • LIVE • BROADCASTING</p><p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a></p><div class="music-licence-wrap"><img class="music-licence-badge" src="ppl-prs-badge.svg" alt="PPL PRS – United for Music"></div></footer>
 </body>
